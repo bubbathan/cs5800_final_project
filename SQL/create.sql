@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS
       STAFF
     , PATIENT
     , SHIFT
-    , MPROCEDURE
+    , PROCEDURE
     , DEPARTMENT
     , LOCATION
     , ROOM
@@ -77,6 +77,7 @@ CREATE TABLE NURSE (
   , credentials   VARCHAR(100)    NOT NULL
   , onCall        BIT             NOT NULL
   , PRIMARY KEY (employeeId)
+  , CHECK(credentials IN ('CNA', 'LPN', 'RN', 'APRN', 'NCS', 'None'))
 );
 
 CREATE TABLE PATIENT (
@@ -98,7 +99,7 @@ CREATE TABLE SHIFT (
   , PRIMARY KEY (code)
 );
 
-CREATE TABLE MPROCEDURE (
+CREATE TABLE PROCEDURE (
     code  INT               NOT NULL
   , name  VARCHAR(250)      NOT NULL
   , cost  DECIMAL(100, 2)
@@ -120,7 +121,6 @@ CREATE TABLE DEPARTMENT (
     departmentId  INT           NOT NULL
   , name          VARCHAR(150)
   , head          INT
-  , location      VARCHAR(100)  NOT NULL
   , PRIMARY KEY (departmentId)
   , FOREIGN KEY (head) references STAFF (employeeId)
 );
@@ -221,7 +221,7 @@ CREATE TABLE TREAT (
   , patientId       INT   NOT NULL
   , employeeId      INT   NOT NULL
   , PRIMARY KEY (procedureCode, medicationCode, patientId, employeeId)
-  , FOREIGN KEY (procedureCode) REFERENCES MPROCEDURE (code)
+  , FOREIGN KEY (procedureCode) REFERENCES PROCEDURE (code)
   , FOREIGN KEY (medicationCode) REFERENCES MEDICATION (code)
   , FOREIGN KEY (patientId) REFERENCES PATIENT (patientId)
   , FOREIGN KEY (employeeId) REFERENCES DOCTOR (employeeId)
@@ -239,12 +239,12 @@ CREATE TABLE VISIT (
 );
 
 CREATE TABLE STAYS (
-    patientId
-  , roomNumber
-  , enterDate
-  , enterTime
-  , dischargeDate
-  , dischargeTime
+    patientId       INT           NOT NULL
+  , roomNumber      VARCHAR(20)   NOT NULL
+  , enterDate       DATE          NOT NULL
+  , enterTime       TIME
+  , dischargeDate   DATE
+  , dischargeTime   TIME
   , PRIMARY KEY (patientId, roomNumber, enterDate)
   , FOREIGN KEY (patientId) REFERENCES PATIENT (patientId)
   , FOREIGN KEY (roomNumber) REFERENCES ROOM (roomNumber)
