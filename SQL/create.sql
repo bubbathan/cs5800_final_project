@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS
       STAFF
     , PATIENT
     , SHIFT
-    , PROCEDURE
+    , MPROCEUDRE
     , DEPARTMENT
     , LOCATION
     , ROOM
@@ -29,7 +29,15 @@ DROP TABLE IF EXISTS
     , DIAGNOSED
     , TREAT
     , VISIT
-    , STAYS
+    , STAYS;
+
+CREATE TABLE SHIFT (
+    code        INT           NOT NULL
+  , startTime   TIME
+  , endTime     TIME
+  , days        VARCHAR(100)
+  , PRIMARY KEY (code)
+);
 
 CREATE TABLE STAFF (
     employeeId    INT             NOT NULL
@@ -91,29 +99,21 @@ CREATE TABLE PATIENT (
   , PRIMARY KEY (patientId)
 );
 
-CREATE TABLE SHIFT (
-    code        INT           NOT NULL
-  , startTime   TIME
-  , endTime     TIME
-  , days        VARCHAR(100)
-  , PRIMARY KEY (code)
-);
-
-CREATE TABLE PROCEDURE (
+CREATE TABLE MPROCEUDRE (
     code  INT               NOT NULL
   , name  VARCHAR(250)      NOT NULL
-  , cost  DECIMAL(100, 2)
+  , cost  DECIMAL(65, 2)
   , PRIMARY KEY (code)
 );
 
 CREATE TABLE OUTPATIENTPROCEDURE (
-    code  INT   NOT NULL  REFERENCES PROCEDURE (code)
+    code  INT   NOT NULL  REFERENCES MPROCEUDRE (code)
   , PRIMARY KEY (code)
 );
 
 CREATE TABLE INPATIENTPROCEDURE (
-    code         INT              NOT NULL   REFERENCES PROCEDURE (code)
-  , avgStayLen   DECIMAL(100, 2)
+    code         INT              NOT NULL   REFERENCES MPROCEUDRE (code)
+  , avgStayLen   DECIMAL(65, 2)
   , PRIMARY KEY (code)
 );
 
@@ -144,7 +144,7 @@ CREATE TABLE MEDICATION (
     code    INT               NOT NULL
   , name    VARCHAR(150)      NOT NULL
   , brand   VARCHAR(150)      NOT NULL
-  , cost    DECIMAL(100, 2)
+  , cost    DECIMAL(65, 2)
   , PRIMARY KEY (code)
 );
 
@@ -221,7 +221,7 @@ CREATE TABLE TREAT (
   , patientId       INT   NOT NULL
   , employeeId      INT   NOT NULL
   , PRIMARY KEY (procedureCode, medicationCode, patientId, employeeId)
-  , FOREIGN KEY (procedureCode) REFERENCES PROCEDURE (code)
+  , FOREIGN KEY (procedureCode) REFERENCES MPROCEUDRE (code)
   , FOREIGN KEY (medicationCode) REFERENCES MEDICATION (code)
   , FOREIGN KEY (patientId) REFERENCES PATIENT (patientId)
   , FOREIGN KEY (employeeId) REFERENCES DOCTOR (employeeId)
