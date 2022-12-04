@@ -47,10 +47,8 @@ CREATE TABLE STAFF (
   , wage          DECIMAL(20, 2)
   , address       VARCHAR(100)
   , phone         VARCHAR(50)
-  , shiftCode     INT
   , PRIMARY KEY (employeeId)
   , FOREIGN KEY (supervisor) REFERENCES STAFF (employeeId)
-  , FOREIGN KEY (shiftCode) REFERENCES SHIFT (code)
 );
 
 CREATE TABLE DOCTOR (
@@ -120,9 +118,7 @@ CREATE TABLE INPATIENTPROCEDURE (
 CREATE TABLE DEPARTMENT (
     departmentId  INT           NOT NULL
   , name          VARCHAR(150)
-  , head          INT
   , PRIMARY KEY (departmentId)
-  , FOREIGN KEY (head) references STAFF (employeeId)
 );
 
 CREATE TABLE LOCATION (
@@ -192,9 +188,10 @@ CREATE TABLE HOUSES (
 );
 
 CREATE TABLE ISSCHEDULED (
-    employeeId  INT   NOT NULL
-  , code        INT   NOT NULL
-  , PRIMARY KEY (employeeId, code)
+    employeeId      INT   NOT NULL
+  , code            INT   NOT NULL
+  , scheduledDate   DATE  NOT NULL
+  , PRIMARY KEY (employeeId, code, scheduledDate)
   , FOREIGN KEY (employeeId) REFERENCES STAFF (employeeId)
   , FOREIGN KEY (code) REFERENCES SHIFT (code)
 );
@@ -249,4 +246,12 @@ CREATE TABLE STAYS (
   , FOREIGN KEY (patientId) REFERENCES PATIENT (patientId)
   , FOREIGN KEY (roomNumber) REFERENCES ROOM (roomNumber)
   , CHECK (dischargeDate >= enterDate)
+);
+
+CREATE TABLE LEADS (
+    employeeId      INT           NOT NULL
+  , departmentId    VARCHAR(20)   NOT NULL
+  , PRIMARY KEY (employeeId, departmentId)
+  , FOREIGN KEY (employeeId) REFERENCES STAFF (employeeId)
+  , FOREIGN KEY (departmentId) REFERENCES DEPARTMENT (departmentId)
 );
