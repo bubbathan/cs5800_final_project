@@ -1,5 +1,6 @@
 DELIMITER $$
-CREATE PROCEDURE register_patient (IN name VARCHAR (100), 
+CREATE PROCEDURE register_patient (IN patientId INT,
+                                    IN name VARCHAR (100), 
                                     IN ssn VARCHAR (11), 
                                     IN address VARCHAR (100), 
                                     IN phone VARCHAR (50), 
@@ -7,8 +8,8 @@ CREATE PROCEDURE register_patient (IN name VARCHAR (100),
                                     IN pcp VARCHAR (100)
                                     OUT patientId INT)
 begin
-    insert into PATIENT (name, ssn, address, phone, insuranceId, pcp) 
-    values (name, ssn, address, phone, insuranceId, pcp);
+    insert into PATIENT (patientId, name, ssn, address, phone, insuranceId, pcp) 
+    values (patientId, name, ssn, address, phone, insuranceId, pcp);
     set patientId = last_insert_id();
 end$$
 DELIMITER ;
