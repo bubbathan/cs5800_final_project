@@ -1,4 +1,4 @@
-def register_patient(cursor, id, name, ssn, address='NULL', phone='NULL', insuranceId='NULL', pcp='NULL')
+def register_patient(cursor, id, name, ssn, address='NULL', phone='NULL', insuranceId='NULL', pcp='NULL'):
     '''
     Input:
         cursor: cursor object
@@ -14,7 +14,7 @@ def register_patient(cursor, id, name, ssn, address='NULL', phone='NULL', insura
     cursor.execute(query)
     return cursor.fetchall()
 
-def patient_report(cursor, patientId)
+def patient_report(cursor, patientId):
     '''
     Input:
         cursor: cursor object
@@ -24,7 +24,7 @@ def patient_report(cursor, patientId)
     cursor.execute(query)
     return cursor.fetchall()
 
-def schedule_staff(cursor, employeeName, shiftCode, shiftDate)
+def schedule_staff(cursor, employeeName, shiftCode, shiftDate):
     '''
     Input:
         cursor: cursor object
