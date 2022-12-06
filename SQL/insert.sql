@@ -35,7 +35,7 @@ INSERT INTO SURGEON VALUES
 
 INSERT INTO GENERAL VALUES (6, 'PEDIATRICS')
 
-INSERT INTO SPECIALIST VALUES (11, 'DERMATOLOGY')
+INSERT INTO SPECIALIST VALUES (11, 'OBSTETRICS AND GYNECOLOGY')
 
 INSERT INTO NURSE VALUES
       (3, 'NURSING DIRECTOR', 1, 'RN', 0)
@@ -57,20 +57,82 @@ INSERT INTO INPATIENTPROCEDURE VALUES (1234, 48.00)
 
 INSERT INTO DEPARTMENT VALUES
       (121, 'NEUROLOGY')
-    , (122, 'CARDIOLOGY')
+    , (122, 'OBSTETRICS AND GYNECOLOGY')
     , (123, 'PEDIATRICS')
+    , (124, 'ADMINISTRATION')
 
 INSERT INTO LOCATION VALUES
       (111, '100 Main St', 'ADMIN WING')
     , (112, '100 Main St', 'PEDIATRIC WING')
-    , (113, '100 Main St', 'EMERGENCY ROOM')
+    , (113, '100 Main St', 'INFANT DELIVERY WING')
     , (114, '110 Main St', 'JIMOTHY HALPERT NEUROLOGY BUILDING')
 
 INSERT INTO ROOM VALUES
       ('A-101', 'ADMIN', 1, 0)
     , ('A-102', 'ADMIN', 1, 0)
     , ('A-103', 'PATIENT ROOM', 1, 1)
-    , ('A-104', )
+    , ('A-104', 'PATIENT ROOM', 1, 0)
+    , ('A-201', 'POST-OP', 2, 1)
+    , ('A-202', 'POST-OP', 2, 1)
+    , ('A-203', 'OPERATING ROOM', 2, 0)
+    , ('A-204', 'OPERATING ROOM', 2, 1)
+    , ('A-301', 'IN-PATIENT STAY', 3, 1)
+    , ('A-302', 'IN-PATIENT STAY', 3, 0)
+    , ('A-303', 'IN-PATIENT STAY', 3, 1)
+    , ('A-304', 'IN-PATIENT STAY', 3, 1)
+    , ('B-101', 'PATIENT ROOM', 1, 1)
+    , ('B-102', 'PATIENT ROOM', 1, 1)
+    , ('B-103', 'PATIENT ROOM', 1, 1)
+    , ('B-104', 'PATIENT ROOM', 1, 1)
+
+INSERT INTO MEDICATION VALUES
+    (00001, 'ACETAMINOPHEN', 'TYLENOL', 5.00)
+  , (00002, 'AMOXICILLIN', 'GENERIC', 15.00)
+  , (00003, 'FLU VACCCINE 2022', 'GENERIC', 0.00)
+  , (00004, 'COVID-19 VACCINE', 'PFIZER', 0.00)
+
+INSERT INTO DIAGNOSIS VALUES
+    ('EAR INFECTION', 'earache, feeling of fullness in the ear, ear drainage')
+  , ('MIGRAINE', 'severe headache, throbbing or pulsing sensation on the side of the head')
+
+INSERT INTO WORKSIN VALUES
+    (1, 124)
+  , (2, 124)
+  , (5, 122)
+  , (6, 123)
+  , (11, 121)
+  , (3, 124)
+  , (7, 122)
+  , (8, 123)
+  , (4, 124)
+  , (9, 124)
+  , (10, 124)
+
+INSERT INTO WORKSWITH VALUES
+    (5, 7)
+  , (6, 8)
+
+INSERT INTO PRESCRIBES VALUES
+    (6, 0002, 00002, '2022-05-01', 6.00, 'mL')
+  , (11, 0001, 00001, '2022-05-06', 500.00, 'mg')
+
+INSERT INTO HOUSES VALUES
+    (111, 'A-101')
+  , (111, 'A-102')
+  , (112, 'A-103')
+  , (112, 'A-104')
+  , (113, 'A-201')
+  , (113, 'A-202')
+  , (113, 'A-203')
+  , (113, 'A-204')
+  , (114, 'A-301')
+  , (114, 'A-302')
+  , (114, 'A-303')
+  , (114, 'A-304')
+  , (115, 'B-101')
+  , (115, 'B-102')
+  , (115, 'B-103')
+  , (115, 'B-104')
 
 
 
@@ -79,10 +141,3 @@ INSERT INTO ROOM VALUES
 
 
 
-CREATE TABLE ROOM (
-    roomNumber    VARCHAR(20)   NOT NULL
-  , roomType      VARCHAR(100)
-  , floor         INT           NOT NULL
-  , availability  BIT           NOT NULL
-  , PRIMARY KEY (roomNumber)
-);
