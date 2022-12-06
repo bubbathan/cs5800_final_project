@@ -8,8 +8,6 @@ mysql.connector.connect(host=data['host'],
                         database=data['database']
                         )
 
-print(data)
-
 
 # TODO: Get all staff id and put into a list, or lists
 # TODO: Check which list the user id is in to determine navigation
