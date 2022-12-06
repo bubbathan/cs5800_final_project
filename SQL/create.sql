@@ -249,8 +249,8 @@ CREATE TABLE STAYS (
 );
 
 CREATE TABLE LEADS (
-    employeeId      INT           NOT NULL
-  , departmentId    VARCHAR(20)   NOT NULL
+    employeeId      INT   NOT NULL
+  , departmentId    INT   NOT NULL
   , PRIMARY KEY (employeeId, departmentId)
   , FOREIGN KEY (employeeId) REFERENCES STAFF (employeeId)
   , FOREIGN KEY (departmentId) REFERENCES DEPARTMENT (departmentId)

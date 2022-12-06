@@ -46,11 +46,11 @@ INSERT INTO NURSE VALUES
     , (8, 'FULL-TIME', 0, 'CNA', 1);
 
 INSERT INTO PATIENT VALUES
-      (0001, '111-111-1110', 'JOHN DOE', '111 Main St', '555-111-1111', 123456, 'QUINN')
-    , (0002, '111-111-1111', 'JANE DOE', '111 Main St', '555-111-1111', 123456, 'QUINN')
-    , (0003, '111-111-1112', 'JIM DOE', '222 Main St', '555-111-1112', 234567, 'GEOFF');
+      (0001, '111-11-1110', 'JOHN DOE', '111 Main St', '555-111-1111', 123456, 'QUINN')
+    , (0002, '111-11-1111', 'JANE DOE', '111 Main St', '555-111-1111', 123456, 'QUINN')
+    , (0003, '111-11-1112', 'JIM DOE', '222 Main St', '555-111-1112', 234567, 'GEOFF');
 
-INSERT INTO MPROCEUDRE VALUES
+INSERT INTO MPROCEDURE VALUES
       (1234, 'CESAREAN SECTION', 7500.00)
     , (1235, 'TONSILLECTOMY', 800.00);
 
@@ -68,7 +68,8 @@ INSERT INTO LOCATION VALUES
       (111, '100 Main St', 'ADMIN WING')
     , (112, '100 Main St', 'PEDIATRIC WING')
     , (113, '100 Main St', 'INFANT DELIVERY WING')
-    , (114, '110 Main St', 'JIMOTHY HALPERT NEUROLOGY BUILDING')
+    , (114, '100 Main St', 'MOTHER BABY')
+    , (115, '110 Main St', 'JIMOTHY HALPERT NEUROLOGY BUILDING');
 
 INSERT INTO ROOM VALUES
       ('A-101', 'ADMIN', 1, 0)
@@ -86,18 +87,18 @@ INSERT INTO ROOM VALUES
     , ('B-101', 'PATIENT ROOM', 1, 1)
     , ('B-102', 'PATIENT ROOM', 1, 1)
     , ('B-103', 'PATIENT ROOM', 1, 1)
-    , ('B-104', 'PATIENT ROOM', 1, 1)
+    , ('B-104', 'PATIENT ROOM', 1, 1);
 
 INSERT INTO MEDICATION VALUES
-    (00001, 'ACETAMINOPHEN', 'TYLENOL', 5.00, 'mg')
-  , (00002, 'AMOXICILLIN', 'GENERIC', 15.00, 'mL')
-  , (00003, 'FLU VACCCINE 2022', 'GENERIC', 0.00, 'mL')
-  , (00004, 'COVID-19 VACCINE', 'PFIZER', 0.00, 'mL')
-  , (00005, 'IBUPROFEN', 'GENERIC', 5.00, 'mg')
+    (00001, 'ACETAMINOPHEN', 'TYLENOL', 'mg', 5.00)
+  , (00002, 'AMOXICILLIN', 'GENERIC', 'mL', 15.00)
+  , (00003, 'FLU VACCCINE 2022', 'GENERIC', 'mL', 0.00)
+  , (00004, 'COVID-19 VACCINE', 'PFIZER', 'mL', 0.00)
+  , (00005, 'IBUPROFEN', 'GENERIC', 'mg', 5.00);
 
 INSERT INTO DIAGNOSIS VALUES
     ('EAR INFECTION', 'earache, feeling of fullness in the ear, ear drainage')
-  , ('MIGRAINE', 'severe headache, throbbing or pulsing sensation on the side of the head')
+  , ('MIGRAINE', 'severe headache, throbbing or pulsing sensation on the side of the head');
 
 INSERT INTO WORKSIN VALUES
     (1, 124)
@@ -111,16 +112,16 @@ INSERT INTO WORKSIN VALUES
   , (8, 123)
   , (4, 124)
   , (9, 124)
-  , (10, 124)
+  , (10, 124);
 
 INSERT INTO WORKSWITH VALUES
     (5, 7)
   , (6, 8)
-  , (12, 8)
+  , (12, 8);
 
 INSERT INTO PRESCRIBES VALUES
     (6, 0002, 00002, '2022-05-01', 6.00)
-  , (11, 0001, 00001, '2022-05-06', 500.00)
+  , (11, 0001, 00001, '2022-05-06', 500.00);
 
 INSERT INTO HOUSES VALUES
     (111, 'A-101')
@@ -138,7 +139,7 @@ INSERT INTO HOUSES VALUES
   , (115, 'B-101')
   , (115, 'B-102')
   , (115, 'B-103')
-  , (115, 'B-104')
+  , (115, 'B-104');
 
 INSERT INTO ISSCHEDULED VALUES
     (1, 1, '2022-05-02')
