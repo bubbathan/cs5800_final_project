@@ -1,14 +1,14 @@
 import json
 import mysql.connector
 
-data = json.load(open('./Optional/keys.json'))
-mysql.connector.connect(host=data['host'], 
-                        user=data['user'], 
-                        password=data['password'], 
-                        database=data['database']
-                        )
+# data = json.load(open('keys.json'))
+# mysql.connector.connect(host=data['host'], 
+#                         user=data['user'], 
+#                         password=data['password'], 
+#                         database=data['database']
+#                         )
 
-print(data)
+# print(data)
 
 
 # TODO: Get all staff id and put into a list, or lists
