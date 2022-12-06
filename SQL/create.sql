@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS
       STAFF
     , PATIENT
     , SHIFT
-    , MPROCEUDRE
+    , MPROCEDURE
     , DEPARTMENT
     , LOCATION
     , ROOM
@@ -97,7 +97,7 @@ CREATE TABLE PATIENT (
   , PRIMARY KEY (patientId)
 );
 
-CREATE TABLE MPROCEUDRE (
+CREATE TABLE MPROCEDURE (
     code  INT               NOT NULL
   , name  VARCHAR(250)      NOT NULL
   , cost  DECIMAL(65, 2)
@@ -105,12 +105,12 @@ CREATE TABLE MPROCEUDRE (
 );
 
 CREATE TABLE OUTPATIENTPROCEDURE (
-    code  INT   NOT NULL  REFERENCES MPROCEUDRE (code)
+    code  INT   NOT NULL  REFERENCES MPROCEDURE (code)
   , PRIMARY KEY (code)
 );
 
 CREATE TABLE INPATIENTPROCEDURE (
-    code         INT              NOT NULL   REFERENCES MPROCEUDRE (code)
+    code         INT              NOT NULL   REFERENCES MPROCEDURE (code)
   , avgStayLen   DECIMAL(65, 2)
   , PRIMARY KEY (code)
 );
@@ -137,9 +137,10 @@ CREATE TABLE ROOM (
 );
 
 CREATE TABLE MEDICATION (
-    code    INT               NOT NULL
-  , name    VARCHAR(150)      NOT NULL
-  , brand   VARCHAR(150)      NOT NULL
+    code    INT                 NOT NULL
+  , name    VARCHAR(150)        NOT NULL
+  , brand   VARCHAR(150)        NOT NULL
+  , measurementType VARCHAR(20) NOT NULL
   , cost    DECIMAL(65, 2)
   , PRIMARY KEY (code)
 );
@@ -172,7 +173,6 @@ CREATE TABLE PRESCRIBES (
   , code            INT         NOT NULL
   , datePrescribed  DATE        NOT NULL
   , dosage          DECIMAL     NOT NULL
-  , measurementType VARCHAR(20) NOT NULL
   , PRIMARY KEY (employeeId, patientId, code, datePrescribed)
   , FOREIGN KEY (employeeId) REFERENCES DOCTOR (employeeId)
   , FOREIGN KEY (patientId) REFERENCES PATIENT (patientId)
@@ -218,7 +218,7 @@ CREATE TABLE TREAT (
   , patientId       INT   NOT NULL
   , employeeId      INT   NOT NULL
   , PRIMARY KEY (procedureCode, medicationCode, patientId, employeeId)
-  , FOREIGN KEY (procedureCode) REFERENCES MPROCEUDRE (code)
+  , FOREIGN KEY (procedureCode) REFERENCES MPROCEDURE (code)
   , FOREIGN KEY (medicationCode) REFERENCES MEDICATION (code)
   , FOREIGN KEY (patientId) REFERENCES PATIENT (patientId)
   , FOREIGN KEY (employeeId) REFERENCES DOCTOR (employeeId)
@@ -249,8 +249,8 @@ CREATE TABLE STAYS (
 );
 
 CREATE TABLE LEADS (
-    employeeId      INT           NOT NULL
-  , departmentId    VARCHAR(20)   NOT NULL
+    employeeId      INT   NOT NULL
+  , departmentId    INT   NOT NULL
   , PRIMARY KEY (employeeId, departmentId)
   , FOREIGN KEY (employeeId) REFERENCES STAFF (employeeId)
   , FOREIGN KEY (departmentId) REFERENCES DEPARTMENT (departmentId)
