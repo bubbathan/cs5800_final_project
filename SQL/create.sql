@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS
       STAFF
     , PATIENT
     , SHIFT
-    , PROCEDURE
+    , MPROCEDURE
     , DEPARTMENT
     , LOCATION
     , ROOM
@@ -29,7 +29,15 @@ DROP TABLE IF EXISTS
     , DIAGNOSED
     , TREAT
     , VISIT
-    , STAYS
+    , STAYS;
+
+CREATE TABLE SHIFT (
+    code        INT           NOT NULL
+  , startTime   TIME
+  , endTime     TIME
+  , days        VARCHAR(100)
+  , PRIMARY KEY (code)
+);
 
 CREATE TABLE STAFF (
     employeeId    INT             NOT NULL
@@ -39,10 +47,8 @@ CREATE TABLE STAFF (
   , wage          DECIMAL(20, 2)
   , address       VARCHAR(100)
   , phone         VARCHAR(50)
-  , shiftCode     INT
   , PRIMARY KEY (employeeId)
   , FOREIGN KEY (supervisor) REFERENCES STAFF (employeeId)
-  , FOREIGN KEY (shiftCode) REFERENCES SHIFT (code)
 );
 
 CREATE TABLE DOCTOR (
@@ -91,38 +97,28 @@ CREATE TABLE PATIENT (
   , PRIMARY KEY (patientId)
 );
 
-CREATE TABLE SHIFT (
-    code        INT           NOT NULL
-  , startTime   TIME
-  , endTime     TIME
-  , days        VARCHAR(100)
-  , PRIMARY KEY (code)
-);
-
-CREATE TABLE PROCEDURE (
+CREATE TABLE MPROCEDURE (
     code  INT               NOT NULL
   , name  VARCHAR(250)      NOT NULL
-  , cost  DECIMAL(100, 2)
+  , cost  DECIMAL(65, 2)
   , PRIMARY KEY (code)
 );
 
 CREATE TABLE OUTPATIENTPROCEDURE (
-    code  INT   NOT NULL  REFERENCES PROCEDURE (code)
+    code  INT   NOT NULL  REFERENCES MPROCEDURE (code)
   , PRIMARY KEY (code)
 );
 
 CREATE TABLE INPATIENTPROCEDURE (
-    code         INT              NOT NULL   REFERENCES PROCEDURE (code)
-  , avgStayLen   DECIMAL(100, 2)
+    code         INT              NOT NULL   REFERENCES MPROCEDURE (code)
+  , avgStayLen   DECIMAL(65, 2)
   , PRIMARY KEY (code)
 );
 
 CREATE TABLE DEPARTMENT (
     departmentId  INT           NOT NULL
   , name          VARCHAR(150)
-  , head          INT
   , PRIMARY KEY (departmentId)
-  , FOREIGN KEY (head) references STAFF (employeeId)
 );
 
 CREATE TABLE LOCATION (
@@ -141,10 +137,11 @@ CREATE TABLE ROOM (
 );
 
 CREATE TABLE MEDICATION (
-    code    INT               NOT NULL
-  , name    VARCHAR(150)      NOT NULL
-  , brand   VARCHAR(150)      NOT NULL
-  , cost    DECIMAL(100, 2)
+    code    INT                 NOT NULL
+  , name    VARCHAR(150)        NOT NULL
+  , brand   VARCHAR(150)        NOT NULL
+  , measurementType VARCHAR(20) NOT NULL
+  , cost    DECIMAL(65, 2)
   , PRIMARY KEY (code)
 );
 
@@ -176,7 +173,6 @@ CREATE TABLE PRESCRIBES (
   , code            INT         NOT NULL
   , datePrescribed  DATE        NOT NULL
   , dosage          DECIMAL     NOT NULL
-  , measurementType VARCHAR(20) NOT NULL
   , PRIMARY KEY (employeeId, patientId, code, datePrescribed)
   , FOREIGN KEY (employeeId) REFERENCES DOCTOR (employeeId)
   , FOREIGN KEY (patientId) REFERENCES PATIENT (patientId)
@@ -192,9 +188,10 @@ CREATE TABLE HOUSES (
 );
 
 CREATE TABLE ISSCHEDULED (
-    employeeId  INT   NOT NULL
-  , code        INT   NOT NULL
-  , PRIMARY KEY (employeeId, code)
+    employeeId      INT   NOT NULL
+  , code            INT   NOT NULL
+  , scheduledDate   DATE  NOT NULL
+  , PRIMARY KEY (employeeId, code, scheduledDate)
   , FOREIGN KEY (employeeId) REFERENCES STAFF (employeeId)
   , FOREIGN KEY (code) REFERENCES SHIFT (code)
 );
@@ -221,7 +218,7 @@ CREATE TABLE TREAT (
   , patientId       INT   NOT NULL
   , employeeId      INT   NOT NULL
   , PRIMARY KEY (procedureCode, medicationCode, patientId, employeeId)
-  , FOREIGN KEY (procedureCode) REFERENCES PROCEDURE (code)
+  , FOREIGN KEY (procedureCode) REFERENCES MPROCEDURE (code)
   , FOREIGN KEY (medicationCode) REFERENCES MEDICATION (code)
   , FOREIGN KEY (patientId) REFERENCES PATIENT (patientId)
   , FOREIGN KEY (employeeId) REFERENCES DOCTOR (employeeId)
@@ -249,4 +246,12 @@ CREATE TABLE STAYS (
   , FOREIGN KEY (patientId) REFERENCES PATIENT (patientId)
   , FOREIGN KEY (roomNumber) REFERENCES ROOM (roomNumber)
   , CHECK (dischargeDate >= enterDate)
+);
+
+CREATE TABLE LEADS (
+    employeeId      INT           NOT NULL
+  , departmentId    VARCHAR(20)   NOT NULL
+  , PRIMARY KEY (employeeId, departmentId)
+  , FOREIGN KEY (employeeId) REFERENCES STAFF (employeeId)
+  , FOREIGN KEY (departmentId) REFERENCES DEPARTMENT (departmentId)
 );
