@@ -96,6 +96,7 @@ CREATE TABLE PATIENT (
   , pcp           VARCHAR(100)
   , PRIMARY KEY (patientId)
 );
+
 CREATE TABLE MPROCEDURE (
     code  INT               NOT NULL
   , name  VARCHAR(250)      NOT NULL
@@ -109,7 +110,7 @@ CREATE TABLE OUTPATIENTPROCEDURE (
 );
 
 CREATE TABLE INPATIENTPROCEDURE (
-    code         INT              NOT NULL   REFERENCES MPROCEUDRE (code)
+    code         INT              NOT NULL   REFERENCES MPROCEDURE (code)
   , avgStayLen   DECIMAL(65, 2)
   , PRIMARY KEY (code)
 );
@@ -136,9 +137,10 @@ CREATE TABLE ROOM (
 );
 
 CREATE TABLE MEDICATION (
-    code    INT               NOT NULL
-  , name    VARCHAR(150)      NOT NULL
-  , brand   VARCHAR(150)      NOT NULL
+    code    INT                 NOT NULL
+  , name    VARCHAR(150)        NOT NULL
+  , brand   VARCHAR(150)        NOT NULL
+  , measurementType VARCHAR(20) NOT NULL
   , cost    DECIMAL(65, 2)
   , PRIMARY KEY (code)
 );
@@ -216,7 +218,7 @@ CREATE TABLE TREAT (
   , patientId       INT   NOT NULL
   , employeeId      INT   NOT NULL
   , PRIMARY KEY (procedureCode, medicationCode, patientId, employeeId)
-  , FOREIGN KEY (procedureCode) REFERENCES MPROCEUDRE (code)
+  , FOREIGN KEY (procedureCode) REFERENCES MPROCEDURE (code)
   , FOREIGN KEY (medicationCode) REFERENCES MEDICATION (code)
   , FOREIGN KEY (patientId) REFERENCES PATIENT (patientId)
   , FOREIGN KEY (employeeId) REFERENCES DOCTOR (employeeId)
@@ -247,8 +249,8 @@ CREATE TABLE STAYS (
 );
 
 CREATE TABLE LEADS (
-    employeeId      INT           NOT NULL
-  , departmentId    VARCHAR(20)   NOT NULL
+    employeeId      INT   NOT NULL
+  , departmentId    INT   NOT NULL
   , PRIMARY KEY (employeeId, departmentId)
   , FOREIGN KEY (employeeId) REFERENCES STAFF (employeeId)
   , FOREIGN KEY (departmentId) REFERENCES DEPARTMENT (departmentId)
