@@ -1,0 +1,88 @@
+USE HOSPITAL;
+
+INSERT INTO SHIFT VALUES
+      (1, 09:00:00, 17:00:00, 'weekdays')
+    , (2, 09:00:00, 13:00:00, 'weekdays')
+    , (3, 13:00:00, 17:00:00, 'weekdays')
+    , (4, 13:00:00, 21:00:00, 'everyday')
+    , (5, 21:00:00, 05:00:00, 'everyday')
+    , (6, 01:00:00, 09:00:00, 'everyday')
+    , (7, 08:00:00, 16:00:00, 'everyday');
+
+INSERT INTO STAFF VALUES
+      (1, '000-00-0001', 'JIM', null, 180000.00, '123 Main St', '555-123-4567')
+    , (2, '000-00-0002', 'JANE', 1, 160000.00, '123 Main Blvd', '555-234-5678')
+    , (3, '000-00-0003', 'JOHN', 1, 160000.00, '123 Main Ave', '555-345-6789')
+    , (4, '000-00-0004', 'STACEY', 1, 160000.00, '123 Main Rd', '555-456-7890')
+    , (5, '000-00-0005', 'QUINN', 2, 140000.00, '234 Main St', '555-567-8901')
+    , (6, '000-00-0006', 'GEOFF', 2, 140000.00, '234 Main Blvd', '555-678-9012')
+    , (7, '000-00-0007', 'AMANDA', 3, 140000.00, '234 Main Ave', '555-789-0123')
+    , (8, '000-00-0008', 'BRITTANY', 3, 140000.00, '234 Main Rd', '555-890-1234')
+    , (9, '000-00-0009', 'GEORGE', 4, 100000.00, '345 Main St', '555-901-2345')
+    , (10, '000-00-0010', 'TIFFANY', 4, 100000.00, '345 Main Blvd', '555-012-3456')
+    , (11, '000-00-0011', 'BUB', 2, 130000.00, '345 Main Ave', '555-098-7654')
+
+
+INSERT INTO DOCTOR VALUES
+      (2, 'MEDICAL DIRECTOR', 0)
+    , (5, 'ATTENDING PHYSICIAN', 1)
+    , (6, 'ATTENDING PHYSICIAN', 1)
+    , (11, 'ATTENDING PHYSICIAN', 1)
+
+INSERT INTO SURGEON VALUES
+      (2, 'CARDIOVASCULAR')
+    , (5, 'NEUROSURGERY')
+
+INSERT INTO GENERAL VALUES (6, 'PEDIATRICS')
+
+INSERT INTO SPECIALIST VALUES (11, 'DERMATOLOGY')
+
+INSERT INTO NURSE VALUES
+      (3, 'NURSING DIRECTOR', 1, 'RN', 0)
+    , (7, 'FULL-TIME', 1, 'RN', 1)
+    , (8, 'FULL-TIME', 0, 'CNA', 1)
+
+INSERT INTO PATIENT VALUES
+      (0001, '111-111-1110', 'JOHN DOE', '111 Main St', '555-111-1111', 123456, 'QUINN')
+    , (0002, '111-111-1111', 'JANE DOE', '111 Main St', '555-111-1111', 123456, 'QUINN')
+    , (0003, '111-111-1112', 'JIM DOE', '222 Main St', '555-111-1112', 234567, 'GEOFF')
+
+INSERT INTO MPROCEUDRE VALUES
+      (1234, 'CESAREAN SECTION', 7500.00)
+    , (1235, 'TONSILLECTOMY', 800.00)
+
+INSERT INTO OUTPATIENTPROCEDURE VALUES (1235)
+
+INSERT INTO INPATIENTPROCEDURE VALUES (1234, 48.00)
+
+INSERT INTO DEPARTMENT VALUES
+      (121, 'NEUROLOGY')
+    , (122, 'CARDIOLOGY')
+    , (123, 'PEDIATRICS')
+
+INSERT INTO LOCATION VALUES
+      (111, '100 Main St', 'ADMIN WING')
+    , (112, '100 Main St', 'PEDIATRIC WING')
+    , (113, '100 Main St', 'EMERGENCY ROOM')
+    , (114, '110 Main St', 'JIMOTHY HALPERT NEUROLOGY BUILDING')
+
+INSERT INTO ROOM VALUES
+      ('A-101', 'ADMIN', 1, 0)
+    , ('A-102', 'ADMIN', 1, 0)
+    , ('A-103', 'PATIENT ROOM', 1, 1)
+    , ('A-104', )
+
+
+
+
+
+
+
+
+CREATE TABLE ROOM (
+    roomNumber    VARCHAR(20)   NOT NULL
+  , roomType      VARCHAR(100)
+  , floor         INT           NOT NULL
+  , availability  BIT           NOT NULL
+  , PRIMARY KEY (roomNumber)
+);
