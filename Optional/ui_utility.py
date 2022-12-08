@@ -4,14 +4,15 @@ def select_query(cursor, table, select='*', where=None):
         cursor: cursor object
         table: string, name of table
         select: string, columns to select
-        where: string, conditions for selection
-                i.e. [('id', 1), ('name', 'John')]
+        where: string, conditions for selection in dictionary form
+                i.e. {'id' : 1, 'name' : 'John'}
     '''
     query = f'SELECT {select} FROM {table}'
 
     if where:
-        query += ' WHERE ' + ' AND '.join([f'{column} = {value}' for column, value in where])
+        query += ' WHERE ' + ' AND '.join([f'{column} = {value}' for column, value in where.items()])
 
+    print(query)
     cursor.execute(query)
     return cursor.fetchall()
 
@@ -37,10 +38,10 @@ def delete_query(cursor, table, conditions):
         cursor: cursor object
         table: string, name of table
         conditions: list of tuples, conditions for deletion
-                    i.e. [('id', 1), ('name', 'John')]
+                    i.e. {'id' : 1, 'name' : 'John'}
     '''
     query = f'DELETE FROM {table} WHERE'
-    query += ' WHERE ' + ' AND '.join([f'{column} = {value}' for column, value in conditions])
+    query += ' WHERE ' + ' AND '.join([f'{column} = {value}' for column, value in conditions.items()])
 
     cursor.execute(query)
     return cursor.rowcount
