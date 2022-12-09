@@ -226,7 +226,7 @@ def showTable(table):
 
 '''
 Performs operations to add a row to a table.
-NOT TESTED
+MINIMALLY TESTED
 
 Parameters:
   table: The table to add a row to
@@ -234,11 +234,42 @@ Parameters:
 author: @skal-chin
 '''
 def addTable(table):
-  pass
+
+  cursor.execute(f'describe {table}')
+  data = cursor.fetchall()
+
+  columnNames = []
+  nullConstraints = []
+  inputs = []
+  columnsUsed = []
+
+  for column in data:
+    columnNames.append(column[0])
+    nullConstraints.append('YES' if column[2] == 'NO' else 'NO')
+
+  print('{:<20} {:<10}'.format('Column Name', 'Required'))
+  for i in range(len(columnNames)):
+
+    required = 'NOT REQUIRED' if nullConstraints[i] == 'NO' else 'REQUIRED'
+
+    print(f'Enter value for {columnNames[i].upper()} ({required}):')
+    valInput = input()
+
+    if valInput != '':
+      columnsUsed.append(columnNames[i])
+
+      if not valInput.isdigit():
+        valInput = f'"{valInput}"'
+      inputs.append(valInput)
+  rowId = insert_query(db, cursor, table, columnsUsed, inputs)
+
+  print(f'Row {rowId} has been added to {table.upper()}')
+
+  home()
 
 '''
 Performs operations to delete a row from a table.
-NOT TESTED
+MINIMALLY TESTED
 
 Parameters:
   table: The table to delete a row from
@@ -246,7 +277,34 @@ Parameters:
 author: @skal-chin
 '''
 def deleteTable(table):
-  pass
+  cursor.execute(f'describe {table}')
+  columns = [column[0] for column in cursor.fetchall()]
+  conditions = {}
+
+  print(f'Enter the column names and values of the row you want to delete from {table.upper()}.')
+  print('i.e COLUMN_NAME, VALUE')
+  print('Enter delete to delete the row.')
+
+  while True:
+    userInput = input()
+
+    if userInput.lower() == 'delete':
+      break
+
+    condition = userInput.replace(' ', '').split(',')
+
+    if condition[0] not in columns:
+      print('Invalid column name. Please try again.')
+      continue
+
+    conditions[condition[0]] = condition[1] if condition[1].isdigit() else f'"{condition[1]}"'
+
+  rows = delete_query(db, cursor, table, conditions)
+  print(f'You deleted {rows} rows in {table.upper()}')
+
+  home() 
+
+  
 
 def staffTable():
   tableList = [
@@ -309,18 +367,24 @@ def functionInput():
 
   if functionInput == "1":
     print("You have chosen to register a new patient.")
+    register_patient(db, cursor)
+
   elif functionInput == "2":
     print("You have chosen to update patient records.")
   elif functionInput == "3":
     print("You have chosen to update patient billing.")
   elif functionInput == "4":
     print("You have chosen to generate a patient report.")
+    patient_report(cursor)
+
   elif functionInput == "5":
     print("You have chosen to list on-call staff.")
   elif functionInput == "6":
     print("You have chosen to generate procedure performance report.")
   elif functionInput == "7":
     print("You have chosen to schedule staff.")
+    schedule_staff(db, cursor)
+    
   elif functionInput == "8":
     print("You have chosen to check medicine stock.")
   elif functionInput == "9":
