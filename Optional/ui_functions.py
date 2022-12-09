@@ -117,7 +117,9 @@ author : skal-chin
 '''
 def get_available_rooms(cursor):
 
-    results = cursor.callproc('get_available_rooms', ['@rooms'])
+    cursor.callproc('get_all_available_rooms')
+    cursor.exectute('SELECT * from @available_rooms')
+    results = cursor.fetchall()
     print(results)
 
     return
@@ -163,18 +165,19 @@ def change_medication_cost(db, cursor):
     
     print('Input medication name (REQUIRED)')
     medicationName = input()
+    medicationName = medicationName.upper()
 
     print('Input new cost (REQUIRED)')
     cost = input()
 
     cursor.execute(f'SELECT code FROM medication WHERE name = "{medicationName}"')
-    medicationCode = cursor.fetchone()[0]
+    medicationCode = cursor.fetchone()
+    print(medicationCode[0])
 
-    results = cursor.callproc('change_medication_cost', [medicationCode, cost])
+    cursor.callproc('set_medication_cost', [medicationCode, cost])
     db.commit()
 
     print('Medication cost has been changed')
-    print(results)
 
     return
 
@@ -197,7 +200,7 @@ def change_procedure_cost(db, cursor):
     cursor.execute(f'SELECT code FROM mprocedure WHERE name = "{procedureName}"')
     procedureCode = cursor.fetchone()[0]
 
-    results = cursor.callproc('change_procedure_cost', [procedureCode, cost])
+    results = cursor.callproc('set_procedure_cost', [procedureCode, cost])
     db.commit()
 
     print('Procedure cost has been changed')
@@ -244,7 +247,7 @@ def update_patient_info(db, cursor):
     if not pcp:
         pcp = None
 
-    results = cursor.callproc('update_patient_info', [patientId, name, ssn, address, phone, insuranceId, pcp])
+    results = cursor.callproc('update_patient', [patientId, name, ssn, address, phone, insuranceId, pcp])
     db.commit()
 
     print('Patient information has been updated')

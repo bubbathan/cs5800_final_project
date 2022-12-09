@@ -348,12 +348,12 @@ def functionInput():
   print("---Patient Functions---")
   print("1. Register new patient")
   print("2. Update existing patient records")
-  print("3. Update patient billing")
+  print("3. Update procedure cost")
   print("4. Generate patient report")
+  print("5. Update medication cost")
 
   print("---Staff Functions---")
-  print("5. List on-call staff")
-  print("6. Generate procedure performance report")
+  print("6. List on-call staff")
   print("7. Schedule staff")
 
   print("---Building Functions---")
@@ -371,24 +371,36 @@ def functionInput():
 
   elif functionInput == "2":
     print("You have chosen to update patient records.")
+    update_patient_info(db, cursor)
+
   elif functionInput == "3":
-    print("You have chosen to update patient billing.")
+    print("You have chosen to update a procedure cost.")
+    change_procedure_cost(db, cursor)
+
   elif functionInput == "4":
     print("You have chosen to generate a patient report.")
     patient_report(db, cursor)
 
   elif functionInput == "5":
-    print("You have chosen to list on-call staff.")
+    print("You have chosen to update medication cost.")
+    change_medication_cost(db, cursor)
+
   elif functionInput == "6":
-    print("You have chosen to generate procedure performance report.")
+    print("You have chosen to list on-call staff.")
+    get_on_call_doctors(cursor)
+
   elif functionInput == "7":
     print("You have chosen to schedule staff.")
     schedule_staff(db, cursor)
 
   elif functionInput == "8":
     print("You have chosen to check medicine stock.")
+    get_medications(cursor)
+
   elif functionInput == "9":
     print("You have chosen to print available rooms.")
+    get_available_rooms(cursor)
+
   elif functionInput == "10":
     home()
   elif functionInput == "11":
@@ -398,8 +410,5 @@ def functionInput():
     functionInput()
 
   home()
-
-
-
 
 authUser()
