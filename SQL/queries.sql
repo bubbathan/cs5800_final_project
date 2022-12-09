@@ -1,3 +1,14 @@
+USE HOSPITAL;
+
+
+DROP PROCEDURE IF EXISTS get_all_available_rooms;
+DROP PROCEDURE IF EXISTS get_medications;
+DROP PROCEDURE IF EXISTS get_on_call_doctors;
+DROP PROCEDURE IF EXISTS set_medication_cost;
+DROP PROCEDURE IF EXISTS update_patient;
+DROP PROCEDURE IF EXISTS set_procedure_cost;
+
+
 DELIMITER $$
 CREATE PROCEDURE get_all_available_rooms()
 begin
@@ -8,34 +19,32 @@ DELIMITER ;
 DELIMITER $$
 CREATE PROCEDURE get_medications()
 begin
-    select name from MEDICATION;
+    select * from MEDICATION;
 end$$
 DELIMITER ;
 
 DELIMITER $$
 CREATE PROCEDURE get_on_call_doctors()
 begin
-    select employeeName from DOCTOR where onCall = 1;
+    select employeeName from STAFF where employeeId in (select employeeId from DOCTOR where onCall = 1);
 end$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE update_medication_cost (IN refCode INT,
-                                        IN newCost DECIMAL (100,2))
+CREATE PROCEDURE set_medication_cost (IN refCode INT, IN newCost DECIMAL (20, 2))
 begin
-    update MEDICATION
-    set cost = newCost
-    where code = refCode;
+    UPDATE MEDICATION
+    SET cost = newCost 
+    WHERE code = refCode;
 end$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE update_procedure_cost (IN refCode INT,
-                                        IN newCost DECIMAL (100,2))
+CREATE PROCEDURE set_procedure_cost (IN refCode INT, IN newCost DECIMAL (20, 2))
 begin
-	update MPROCEDURE
-    set cost = newCost
-    where code = refCode;
+	UPDATE MPROCEDURE
+    SET cost = newCost
+    WHERE code = refCode;
 end$$
 DELIMITER ;
 
@@ -46,11 +55,10 @@ CREATE PROCEDURE update_patient (IN n_patientId INT,
                                     IN n_address VARCHAR (100), 
                                     IN n_phone VARCHAR (50), 
                                     IN n_insuranceId INT, 
-                                    IN n_pcp VARCHAR (100)
-                                    )
+                                    IN n_pcp VARCHAR (100))
 begin
-	update PATIENT 
-    set name = n_name, ssn = n_ssn, address = n_address, phone = n_phone, insuranceId = n_insuranceId, pcp = n_pcp
-	where patientId = n_patientId;
+	UPDATE PATIENT 
+    SET name = n_name, ssn = n_ssn, address = n_address, phone = n_phone, insuranceId = n_insuranceId, pcp = n_pcp
+	WHERE patientId = n_patientId;
 end$$
 DELIMITER ;
