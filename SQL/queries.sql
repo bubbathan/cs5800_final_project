@@ -1,12 +1,58 @@
 USE HOSPITAL;
 
 
+
+
+
 DROP PROCEDURE IF EXISTS get_all_available_rooms;
 DROP PROCEDURE IF EXISTS get_medications;
 DROP PROCEDURE IF EXISTS get_on_call_doctors;
 DROP PROCEDURE IF EXISTS set_medication_cost;
 DROP PROCEDURE IF EXISTS update_patient;
 DROP PROCEDURE IF EXISTS set_procedure_cost;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 DELIMITER $$
