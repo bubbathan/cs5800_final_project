@@ -375,7 +375,7 @@ def functionInput():
     print("You have chosen to update patient billing.")
   elif functionInput == "4":
     print("You have chosen to generate a patient report.")
-    patient_report(cursor)
+    patient_report(db, cursor)
 
   elif functionInput == "5":
     print("You have chosen to list on-call staff.")
@@ -384,7 +384,7 @@ def functionInput():
   elif functionInput == "7":
     print("You have chosen to schedule staff.")
     schedule_staff(db, cursor)
-    
+
   elif functionInput == "8":
     print("You have chosen to check medicine stock.")
   elif functionInput == "9":
@@ -396,6 +396,8 @@ def functionInput():
   else:
     print("Invalid input. Please try again.")
     functionInput()
+
+  home()
 
 
 

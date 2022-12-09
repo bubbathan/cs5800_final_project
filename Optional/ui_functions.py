@@ -13,43 +13,35 @@ def register_patient(db, cursor):
 
     print('Input patient name (REQUIRED)')
     name = input()
-    name = f'"{name}"'
 
     print('Input patient ssn (REQUIRED)')
     ssn = input()
-    ssn = f'"{ssn}"'
 
     print('Input patient address (OPTIONAL)')
     address = input()
-    if address:
-        address = f'"{address}"'
-    else:
-        address = 'NULL'
+    if not address:
+        address = None
 
     print('Input patient phone (OPTIONAL)')
     phone = input()
-    if phone:
-        phone = f'"{phone}"'
-    else:
-        phone = 'NULL'
+    if not phone:
+        phone = None
 
     print('Input patient insurance id (OPTIONAL)')
     insuranceId = input()
     if not insuranceId:
-        insuranceId = 'NULL'
+        insuranceId = None
 
     print('Input patient pcp (OPTIONAL)')
     pcp = input()
-    if pcp:
-        pcp = f'"{pcp}"'
-    else:
-        pcp = 'NULL'
+    if not pcp:
+        pcp = None
 
-    query = f'CALL register_patient({id}, {name}, {ssn}, {address}, {phone}, {insuranceId}, {pcp})'
-    cursor.execute(query)
+    results = cursor.callproc('register_patient', [id, name, ssn, address, phone, insuranceId, pcp])
     db.commit()
 
-    print(cursor.fetchall())
+    print('New patient has been registered')
+    print(results)
 
     return
 
@@ -61,20 +53,23 @@ Generates a patient report which includes:
     - Patient procedures
     - Patient prescriptions
 Input:
+    db: database object
     cursor: cursor object
 
 author : skal-chin
 '''
-def patient_report(cursor):
+def patient_report(db, cursor):
 
     cursor.execute('SELECT patientId FROM patient')
     patientIds = [patient[0] for patient in cursor.fetchall()]
+
+    print(patientIds)
 
     print('Please enter a valid patient id')
     print('or enter "exit" to return to the main menu')
     inputId = input()
 
-    while inputId not in patientIds:
+    while int(inputId) not in patientIds:
 
         if inputId == 'exit':
             return
@@ -82,9 +77,8 @@ def patient_report(cursor):
         print('Please enter a valid patient id')
         inputId = input()
 
-    query = f'CALL patient_report({inputId})'
-    cursor.execute(query)
-    print(cursor.fetchall())
+    results = cursor.callproc('patient_report', [inputId, '@name', '@phone', '@bill', '@procedures', '@prescriptions'])
+    print(results)
     
     return
 
@@ -100,19 +94,17 @@ def schedule_staff(db, cursor):
 
     print('Input employee name (REQUIRED)')
     employeeName = input()
-    employeeName = f'"{employeeName}"'
 
     print('Input shift code (REQUIRED)')
     shiftCode = input()
 
     print('Input shift date (REQUIRED)')
     shiftDate = input()
-    shiftDate = f'"{shiftDate}"'
 
-    query = f'CALL schedule_staff({employeeName}, {shiftCode}, {shiftDate})'
-    cursor.execute(query)
+    results = cursor.callproc('schedule_staff', [employeeName, shiftCode, shiftDate])
     db.commit()
 
-    print(cursor.fethcall())
+    print('New staff member has been scheduled')
+    print(results)
 
     return
