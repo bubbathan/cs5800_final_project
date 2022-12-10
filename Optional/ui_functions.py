@@ -148,8 +148,11 @@ author : skal-chin
 
 def get_on_call_doctors(cursor):
     
-    results = cursor.callproc('get_on_call_doctors', ['@doctors'])
-    print(results)
+    cursor.execute('SELECT employeeName FROM staff WHERE employeeId IN (SELECT employeeId FROM doctor WHERE onCall = 1)')
+    results = cursor.fetchall()
+    
+    for doctor in results:
+        print(doctor[0])
 
     return
 
@@ -162,22 +165,28 @@ Input:
 author : skal-chin
 '''
 def change_medication_cost(db, cursor):
+
+    cursor.execute('SELECT name FROM medication')
+    medicationNames = [medication[0] for medication in cursor.fetchall()]
     
     print('Input medication name (REQUIRED)')
-    medicationName = input()
-    medicationName = medicationName.upper()
+    medicationName = input().upper()
+
+    while medicationName not in medicationNames:
+        print('Please enter a valid medication name')
+        medicationName = input().upper()
 
     print('Input new cost (REQUIRED)')
     cost = input()
 
     cursor.execute(f'SELECT code FROM medication WHERE name = "{medicationName}"')
     medicationCode = cursor.fetchone()
-    print(medicationCode[0])
 
-    cursor.callproc('set_medication_cost', [medicationCode, cost])
+    results = cursor.callproc('set_medication_cost', [medicationCode[0], cost])
     db.commit()
 
     print('Medication cost has been changed')
+    print(results)
 
     return
 
@@ -190,17 +199,24 @@ Input:
 author : skal-chin
 '''
 def change_procedure_cost(db, cursor):
+
+    cursor.execute('SELECT name FROM mprocedure')
+    procedureNames = [procedure[0] for procedure in cursor.fetchall()]
         
     print('Input procedure name (REQUIRED)')
-    procedureName = input()
+    procedureName = input().upper()
+
+    while procedureName not in procedureNames:
+        print('Please enter a valid procedure name')
+        procedureName = input().upper()
 
     print('Input new cost (REQUIRED)')
     cost = input()
 
     cursor.execute(f'SELECT code FROM mprocedure WHERE name = "{procedureName}"')
-    procedureCode = cursor.fetchone()[0]
+    procedureCode = cursor.fetchone()
 
-    results = cursor.callproc('set_procedure_cost', [procedureCode, cost])
+    results = cursor.callproc('set_procedure_cost', [procedureCode[0], cost])
     db.commit()
 
     print('Procedure cost has been changed')
