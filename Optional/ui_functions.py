@@ -117,10 +117,11 @@ author : skal-chin
 '''
 def get_available_rooms(cursor):
 
-    cursor.callproc('get_all_available_rooms')
-    cursor.exectute('SELECT * from @available_rooms')
+    cursor.execute('SELECT roomNumber FROM room WHERE availability = 1')
     results = cursor.fetchall()
-    print(results)
+
+    for room in results:
+        print(room)
 
     return
 
@@ -133,8 +134,11 @@ author : skal-chin
 '''
 def get_medications(cursor):
 
-    results = cursor.callproc('get_medications', ['@medications'])
-    print(results)
+    cursor.execute('SELECT * FROM medication')
+    results = cursor.fetchall()
+    
+    for medication in results:
+        print(medication)
 
     return
 
